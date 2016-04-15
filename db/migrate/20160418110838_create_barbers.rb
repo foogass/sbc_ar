@@ -8,5 +8,6 @@ class CreateBarbers < ActiveRecord::Migration
   	Barber.create :name => 'David Courtney'
   	Barber.create :name => 'Xaoc'
   	Barber.create :name => 'Aliaksandr Salenka'
+  	
   end
 end
