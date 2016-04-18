@@ -7,6 +7,13 @@ require 'sinatra/activerecord'
 set :database, "sqlite3:barbershop.db"
 
 class Client < ActiveRecord::Base
+
+	# НОВАЯ ВАЛИДАЦИЯ!
+	validates :name, presence: true
+	validates :phone, presence: true
+	validates :datestamp, presence: true
+	validates :barber, presence: true
+
 end
 
 class Barber < ActiveRecord::Base
@@ -28,7 +35,13 @@ post '/visit' do
 # => # СОХРАНЕНИЕ В БАЗУ true-vay
 
 	c = Client.new params[:client]
-	c.save
+
+	if c.save
+		erb "<h2>Спасибо, вы записались!</h2>"
+	else
+		@error = c.errors.full_messages.first
+		erb :visit
+	end
 
 # => # СОХРАНЕНИЕ В БАЗУ lame-vay
 
@@ -46,12 +59,14 @@ post '/visit' do
 #	c.barber = @barber
 #	c.save
 
-	# хеш ошибок
-	hh = { :username => 'Введите имя', :phone => 'Введите телефон', :date_time => 'Введите дату и время'}
+	# СТАРАЯ ВАЛИДАЦИЯ
 
-	@error = hh.select {|key,_| params[key] == ''}.values.join(",")
-	if @error != '' 
-		return erb :visit
-	end
+#	# хеш ошибок
+#	hh = { :username => 'Введите имя', :phone => 'Введите телефон', :date_time => 'Введите дату и время'}
+#
+#	@error = hh.select {|key,_| params[key] == ''}.values.join(",")
+#	if @error != '' 
+#		return erb :visit
+#	end
 
 end
