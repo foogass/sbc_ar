@@ -25,6 +25,7 @@ get '/' do
 end
 
 get '/visit' do
+	@c = Client.new params[:client]
 #	db = get_db
 #	@barget = db.execute 'SELECT * FROM barbers'
 	erb :visit
@@ -34,12 +35,12 @@ post '/visit' do
 
 # => # СОХРАНЕНИЕ В БАЗУ true-vay
 
-	c = Client.new params[:client]
+	@c = Client.new params[:client]
 
-	if c.save
+	if @c.save
 		erb "<h2>Спасибо, вы записались!</h2>"
 	else
-		@error = c.errors.full_messages.first
+		@error = @c.errors.full_messages.first
 		erb :visit
 	end
 
